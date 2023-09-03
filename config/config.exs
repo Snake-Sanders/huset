@@ -47,6 +47,15 @@ config :logger, :console,
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
+# defines the list of Sonoff modules
+config :huset, Huset.SonoffNet,
+  nodes: [
+    %{id: "ESP_E68C6C", ip: "192.168.1.128", description: "Bed lamp"},
+    %{id: "ESP_E69CC4", ip: "192.168.1.116", description: "n/a"},
+    %{id: "ESP_FA88E7", ip: "192.168.1.101", description: "Mirror"},
+    %{id: "ESP_FAC76E", ip: "192.168.1.130", description: "n/a"}
+  ]
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{config_env()}.exs"
