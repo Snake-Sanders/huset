@@ -13,7 +13,9 @@ defmodule Huset.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: Huset.PubSub},
       # Start the Endpoint (http/https)
-      HusetWeb.Endpoint
+      HusetWeb.Endpoint,
+      # Start smart switch supervised entity
+      Huset.Sonoff.Net
       # Start a worker by calling: Huset.Worker.start_link(arg)
       # {Huset.Worker, arg}
     ]
