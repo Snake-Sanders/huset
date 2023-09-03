@@ -26,11 +26,6 @@ defmodule Huset.Sonoff.Net do
     GenServer.call(@server_name, {:toggle_status, dev_id})
   end
 
-  defp maybe_log_stating_process(node, pid) do
-    %{id: id, ip: ip, description: desc} = node
-    Logger.debug("started process pid:#{inspect(pid)}, id: #{id} ip: #{ip} for #{desc}")
-  end
-
   @impl true
   def init(_status) do
     # TODO: monitor the spawn GenServers
@@ -84,5 +79,10 @@ defmodule Huset.Sonoff.Net do
       devices ->
         devices
     end
+  end
+
+  defp maybe_log_stating_process(node, pid) do
+    %{id: id, ip: ip, description: desc} = node
+    Logger.debug("started process pid:#{inspect(pid)}, id: #{id} ip: #{ip} for #{desc}")
   end
 end

@@ -105,7 +105,6 @@ defmodule Huset.Sonoff.Node do
 
     url = "http://#{ip_addr}:8081/zeroconf/switch"
     headers = [{"content-type", "application/json"}]
-
     toggled_status = toggle(device_status)
 
     body =
@@ -117,9 +116,7 @@ defmodule Huset.Sonoff.Node do
     |> case do
       {:ok, data} ->
         Logger.debug("switched successfully #{inspect(data)}")
-
         new_state = %{state | status: toggled_status}
-
         {:reply, toggled_status, new_state}
 
       error ->
@@ -127,33 +124,31 @@ defmodule Huset.Sonoff.Node do
     end
   end
 
-  @doc """
-
+  # Response
+  #
   ## Example
+  #
+  #   %HTTPoison.Response{
+  #     status_code: 200,
+  #     body: "{\"seq\":26,\"error\":0}",
+  #     headers: [
+  #       {"Server", "openresty"},
+  #       {"Content-Type", "application/json; charset=utf-8"},
+  #       {"Content-Length", "20"},
+  #       {"Connection", "close"}
+  #     ],
+  #     request_url: "http://192.168.1.128:8081/zeroconf/switch",
+  #     request: %HTTPoison.Request{
+  #       method: :post,
+  #       url: "http://192.168.1.128:8081/zeroconf/switch",
+  #       headers: [{"content-type", "application/json"}],
+  #       body: "{\"data\":{\"switch\":\"on\"},\"deviceid\":\"ESP_E68C6C\"}",
+  #       params: %{},
+  #       options: []
+  #     }
+  #   }
 
-  Response
-
-          %HTTPoison.Response{
-            status_code: 200,
-            body: "{\"seq\":26,\"error\":0}",
-            headers: [
-              {"Server", "openresty"},
-              {"Content-Type", "application/json; charset=utf-8"},
-              {"Content-Length", "20"},
-              {"Connection", "close"}
-            ],
-            request_url: "http://192.168.1.128:8081/zeroconf/switch",
-            request: %HTTPoison.Request{
-              method: :post,
-              url: "http://192.168.1.128:8081/zeroconf/switch",
-              headers: [{"content-type", "application/json"}],
-              body: "{\"data\":{\"switch\":\"on\"},\"deviceid\":\"ESP_E68C6C\"}",
-              params: %{},
-              options: []
-            }
-          }
-  """
-  def handle_poison_response(response) do
+  defp handle_poison_response(response) do
     case response do
       {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
         {:ok, Jason.decode!(body)}
