@@ -17,7 +17,8 @@ defmodule HusetWeb.Router do
   scope "/", HusetWeb do
     pipe_through(:browser)
 
-    get("/", PageController, :home)
+    live("/", SonoffLive)
+    get("/page", PageController, :home)
   end
 
   # Other scopes may use custom stacks.
